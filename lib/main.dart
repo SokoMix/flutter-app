@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'HomeWidget.dart';
+import 'StartNav.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(StartNav());
 }
