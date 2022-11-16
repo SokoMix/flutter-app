@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Widget settingsMenu() {
+  Widget _settingsMenu() {
     return Center(
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -68,7 +68,7 @@ class _MyAppState extends State<MyApp> {
     } else if (this._getIbar() == 1) {
       return null;
     } else if (this._getIbar() == 2) {
-      return settingsMenu();
+      return _settingsMenu();
     }
   }
 
