@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'Controller.dart';
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  final Controller controller;
+
+  const HomePage({Key? key, required this.controller}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _HomePageState extends State<HomePage> {
   int _iBar = 0;
 
   int _getIbar() {
@@ -35,7 +38,16 @@ class _MyAppState extends State<MyApp> {
               onPressed: null,
               child: Text(
                 'Настройки',
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: TextStyle(fontSize: 17, color: Color.fromRGBO(195, 98, 63, 1)),
+              )),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 5.0),
+          child: TextButton(
+              onPressed: null,
+              child: Text(
+                'Оставить отзыв',
+                style: TextStyle(fontSize: 17, color: Color.fromRGBO(195, 98, 63, 1)),
               )),
         ),
         Padding(
@@ -46,16 +58,7 @@ class _MyAppState extends State<MyApp> {
               },
               child: Text(
                 'Выйти из аккаунта',
-                style: TextStyle(fontSize: 20, color: Colors.red),
-              )),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 5.0),
-          child: TextButton(
-              onPressed: null,
-              child: Text(
-                'Оставить отзыв',
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: TextStyle(fontSize: 17, color: Colors.red),
               )),
         ),
       ],
@@ -75,10 +78,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromRGBO(139, 105, 105, 1),
+        backgroundColor: Colors.black,
         appBar: AppBar(
-          title: Text("Название приложения"),
-          backgroundColor: Color.fromRGBO(205, 155, 155, 1),
+          title: Text(
+            'Rush',
+            style:
+                TextStyle(color: Color.fromRGBO(195, 98, 63, 1), fontSize: 30, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontFamily: 'Nexa'),
+          ),
+          shape: Border(bottom: BorderSide(width: 2.0, color: Colors.cyan)),
+          backgroundColor: Colors.black,
           // actions: <Widget>[
           //   IconButton(
           //       onPressed: null,
@@ -88,26 +96,51 @@ class _MyAppState extends State<MyApp> {
               onPressed: () {},
               icon: Icon(
                 Icons.filter_list_alt,
+                color: Color.fromRGBO(195, 98, 63, 1),
                 size: 25,
               )),
         ),
         body: currentBody(),
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.heart_broken), label: 'Likes'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: 'Settings')
-          ],
-          backgroundColor: Color.fromRGBO(205, 155, 155, 1),
-          onTap: _onTap,
-          currentIndex: _iBar,
-          selectedLabelStyle: TextStyle(fontSize: 10),
-          unselectedLabelStyle: TextStyle(fontSize: 12),
-          unselectedIconTheme: IconThemeData(size: 25),
-          selectedIconTheme: IconThemeData(size: 25),
-          fixedColor: Colors.blue,
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+              color: Colors.cyan,
+              border: Border(top: BorderSide(width: 2.0, color: Colors.cyan))),
+          child: BottomNavigationBar(
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  color: Color.fromRGBO(195, 98, 63, 1),
+                ),
+                label: 'Главная',
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.heart_broken,
+                    color: Color.fromRGBO(195, 98, 63, 1),
+                  ),
+                  label: 'Лайки'),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.settings,
+                    color: Color.fromRGBO(195, 98, 63, 1),
+                  ),
+                  label: 'Настройки')
+            ],
+            backgroundColor: Colors.black,
+            onTap: _onTap,
+            currentIndex: _iBar,
+            selectedLabelStyle:
+                TextStyle(fontSize: 12, color: Color.fromRGBO(195, 98, 63, 1)),
+            unselectedLabelStyle:
+                TextStyle(fontSize: 12, color: Color.fromRGBO(195, 98, 63, 1)),
+            unselectedIconTheme:
+                IconThemeData(size: 25, color: Color.fromRGBO(195, 98, 63, 1)),
+            selectedIconTheme: IconThemeData(size: 25, color: Colors.cyan),
+            unselectedItemColor: Color.fromRGBO(195, 98, 63, 1),
+            selectedItemColor: Colors.cyan,
+          ),
         ));
   }
 }
+// BoxDecoration(color: Colors.cyan, border: null, child :)
