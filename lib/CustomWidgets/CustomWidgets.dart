@@ -94,7 +94,7 @@ class CustomWidgets {
         ));
   }
 
-  Widget loginBtn(context, controller, login, pswd)
+  Widget loginBtn(context, controller, login, pswd, isLoading)
   {
     return Padding(
         padding: EdgeInsets.only(top: 30.0, bottom: 15.0),
@@ -105,23 +105,32 @@ class CustomWidgets {
               textStyle: MaterialStateProperty.all(
                   TextStyle(fontSize: 21, fontWeight: FontWeight.bold)),
             ),
-            onPressed: () {
-              if (controller.loginUser(login.text, pswd.text)>-1) {Navigator.of(context, rootNavigator: true)
-                  .pushNamed('/home_page');}
-              else {
-                showDialog(context: context, builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Center(child: Text('Ошибка')),
-                    backgroundColor: Color.fromRGBO(195, 98, 63, 1),
-                    alignment: Alignment.center,
-                    content: Text('Неверно введен логин или пароль', textAlign: TextAlign.center,),
-                    actions: [
-                      TextButton(onPressed: () {Navigator.of(context).pop();}, child: Text('Закрыть', style: TextStyle(color: Color.fromRGBO(195, 98, 63, 1)),), style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.black)),)
-                    ],
-                  );
-                });
-              }
-            },
+            onPressed:
+                () async {
+            isLoading(true);
+            if (await controller.loginUser(login.text, pswd.text)>-1) {
+              isLoading(false);
+              Navigator.of(context, rootNavigator: true)
+                  .pushNamed('/home_page');
+            }
+            else {
+              isLoading(false);
+              showDialog(context: context, builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Center(child: Text('Ошибка')),
+                  backgroundColor: Color.fromRGBO(195, 98, 63, 1),
+                  alignment: Alignment.center,
+                  content: Text('Неверно введен логин или пароль', textAlign: TextAlign.center,),
+                  actions: [
+                    TextButton(onPressed: () {Navigator.of(context).pop();}, child: Text('Закрыть', style: TextStyle(color: Color.fromRGBO(195, 98, 63, 1)),), style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.black)),)
+                  ],
+                );
+              });
+            }
+          },
+
+
+
             child: Text(
               'Войти',
               style: TextStyle(color: Colors.black),
@@ -164,4 +173,23 @@ class CustomWidgets {
             )
         ));
   }
+
+  Widget userCard()
+  {
+    return Card(
+      elevation: 5.0,
+      child: Column(
+        children: [
+          ListTile(
+            title: Text("Дима Соколов"),
+            subtitle: Text("Мужчина, 18 лет, г. Климовск"),
+            trailing: Icon(Icons.favorite, color: Colors.red),
+          ),
+          Text("Адрес зала: ул. Ленина, д.5"),
+          //фото профиля
+        ],
+      ),
+    );
+  }
 }
+

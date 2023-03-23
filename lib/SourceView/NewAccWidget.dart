@@ -91,9 +91,9 @@ class _NewAccWidgetState extends State<NewAccWidget> {
                       backgroundColor: MaterialStateProperty.all(Color.fromRGBO(195, 98, 63, 1)),
                     ),
                     onPressed:
-                      () {
+                      () async {
                       if (_formKey.currentState!.validate()) {
-                        controller.addUser(_login.text, _pswd.text, _fname.text, _sname.text);
+                        await controller.addUser(_login.text, _pswd.text, _fname.text, _sname.text);
                       Navigator.of(context, rootNavigator: true).pushNamed('/home_page');
                       }
                       },

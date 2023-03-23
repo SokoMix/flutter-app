@@ -16,6 +16,7 @@ class _AuthViewState extends State<AuthView> {
   final _login = TextEditingController();
   final _pswd = TextEditingController();
   final customs = CustomWidgets();
+  bool isLoading = false;
   Image? logo = null;
 
   @override
@@ -31,7 +32,12 @@ class _AuthViewState extends State<AuthView> {
   _AuthViewState({required this.controller});
   @override
   Widget build(BuildContext context) {
-    return Container(
+    if (!isLoading)
+    return SingleChildScrollView(
+        reverse: true,
+        child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+        child: Container(
         color: Colors.black,
         child: Align(
             child: Column(
@@ -53,9 +59,20 @@ class _AuthViewState extends State<AuthView> {
                 )),
             customs.loginInput(_login),
             customs.pswdInput(_pswd),
-            customs.loginBtn(context, controller, _login, _login),
-            customs.createAccountBtn(context)
+            customs.loginBtn(context, controller, _login, _pswd, this.setStateLoading),
+            customs.createAccountBtn(context),
+            Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom))
           ],
-        )));
+        )))));
+    else return Center(
+      child: CircularProgressIndicator(color: Color.fromRGBO(195, 98, 63, 1),),
+    );
+  }
+
+  void setStateLoading(state)
+  {
+    setState(() {
+      isLoading = state;
+    });
   }
 }

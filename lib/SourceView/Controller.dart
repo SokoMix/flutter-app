@@ -1,42 +1,32 @@
 import 'Model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Controller
 {
-  late Model model;
+  late Model model = Model();
   Controller()
   {
     model = Model();
   }
 
-  void addUser(String login, String pswd, String fName, String sName)
+  Future<void> addUser(String login, String pswd, String fName, String sName) async
   {
-    model.addUser('${model.getLastId()}:$login:$pswd:$fName:$sName');
+    final lastid = await model.getLastId();
+    await model.addUser(lastid.toString(), login, pswd, fName, sName);
+  }
+
+  Future<QuerySnapshot> getAllUsers() async
+  {
+    return await model.getFireDocs();
   }
 
   void deleteUser(String id)
   {
-    List<String> users = model.getUsers();
-    for (int i = 0; i < users.length; i++)
-    {
-      if (users[i].split(':')[0] == id)
-      {
-        model.deleteUser(i);
-        break;
-      }
-    }
+    model.deleteUser(id);
   }
 
-  int loginUser(String login, String pswd)
+  Future<int> loginUser(String login, String pswd) async
   {
-    List<String> users = model.getUsers();
-    for (int i = 0; i < users.length; i++)
-      {
-        List<String> temp = users[i].split(':');
-        if (temp[1] == login && temp[2] == pswd)
-          {
-            return int.parse(temp[0]);
-          }
-      }
-    return -1;
+    return int.parse(await model.loginUser(login, pswd));
   }
 }
