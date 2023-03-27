@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "891441846983",
+    "project_id": "rush-ca906",
+    "storage_bucket": "rush-ca906.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891441846983:android:8efa8d5bf381507ca2fce2",
+        "android_client_info": {
+          "package_name": "com.example.test_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "891441846983-a3bmf4011mj72fu7kgv26er6h1qedt09.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRtZ12Ii3lRG77b5wfj5Q9VqgffE5Hf2g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "891441846983-a3bmf4011mj72fu7kgv26er6h1qedt09.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "891441846983-o7tjqrhss0qcmjt9891tobtt4ucls1ku.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "rush.inc"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

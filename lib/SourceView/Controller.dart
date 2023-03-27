@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+
 import 'Model.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Controller
@@ -22,11 +26,30 @@ class Controller
 
   void deleteUser(String id)
   {
-    model.deleteUser(id);
+    model.deleteUser();
+  }
+
+  Future setImage() async
+  {
+    final img = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final imgBytes = await img!.readAsBytes();
+    await model.uploadImg(imgBytes);
+  }
+
+  Future<Image> getAvatar(String id, context) async
+  {
+    final lst = await model.getImg(id) ?? Uint8List(0);
+    return Image.memory(lst, width: MediaQuery.of(context).size.width - 100, height: 300,);
   }
 
   Future<int> loginUser(String login, String pswd) async
   {
-    return int.parse(await model.loginUser(login, pswd));
+    model.setId(int.parse(await model.loginUser(login, pswd)));
+    return model.getId();
+  }
+
+  String currentUserId()
+  {
+    return model.getId().toString();
   }
 }

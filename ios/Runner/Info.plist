@@ -30,6 +30,10 @@
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Uses for upload avatar</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Uses for upload avatar</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>

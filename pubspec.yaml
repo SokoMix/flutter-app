@@ -33,6 +33,8 @@ dependencies:
   firebase_core: ^2.7.1
   cloud_firestore: ^4.4.3
   page_transition: ^2.0.9
+  firebase_storage: ^11.0.16
+  image_picker: ^0.8.7
   flutter:
     sdk: flutter
 

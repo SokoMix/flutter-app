@@ -58,6 +58,17 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.symmetric(vertical: 5.0),
           child: TextButton(
               onPressed: () {
+                controller.setImage();
+              },
+              child: Text(
+                'Добавить фото',
+                style: TextStyle(fontSize: 17, color: Color.fromRGBO(195, 98, 63, 1)),
+              )),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 5.0),
+          child: TextButton(
+              onPressed: () {
                 Navigator.pushNamed(context, '/');
               },
               child: Text(
@@ -69,23 +80,43 @@ class _HomePageState extends State<HomePage> {
     ));
   }
 
-  Widget makeCard(String name, String desc, String gym)
+  Widget makeCard(String name, String desc, String gym, String id, Controller controller)
   {
     return Card(
       elevation: 2.0,
-      child: ListTile(
-        title: Text(name,
-        style: TextStyle(fontSize: 17, color: Colors.red),
-      ),
-        subtitle: Text(desc, style: TextStyle(fontSize: 17, color: Colors.red),),
-        trailing: Text(gym, style: TextStyle(fontSize: 17, color: Colors.red),),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          FutureBuilder(
+              future: controller.getAvatar(id, context),
+              builder: (context, session)
+          {
+            if (session.connectionState == ConnectionState.waiting)
+              return CircularProgressIndicator(
+                  color: Color.fromRGBO(195, 98, 63, 1)
+              );
+            else if (session.connectionState == ConnectionState.done && session.hasData)
+              {
+                return session.data!;
+              }
+            else if (session.connectionState == ConnectionState.done && !session.hasData)
+              return Text("No photo");
+            return Text("Error");
+          }),
+          ListTile(
+            title: Text(name,
+              style: TextStyle(fontSize: 17, color: Colors.red),
+            ),
+            subtitle: Text(desc, style: TextStyle(fontSize: 17, color: Colors.red),),
+            trailing: Text(gym, style: TextStyle(fontSize: 17, color: Colors.red),),
+          )
+        ],
       )
     );
     }
 
   Widget usersCards(Controller contr)
   {
-    
     final alldocs = contr.getAllUsers();
     return FutureBuilder<QuerySnapshot>(
       future: alldocs,
@@ -106,51 +137,19 @@ class _HomePageState extends State<HomePage> {
             else
               {
                 List<Widget> cards = [];
-                cards = (snapshot.data?.docs.map((val) {
-                  Map<String, dynamic> data = val.data() as Map<String, dynamic>;
-                  return makeCard(data['fname'] ?? '', data['sname'] ?? '', data['login'] ?? '');
-                }))!.toList();
-                cards.removeAt(cards.length - 1);
+                final curId = controller.currentUserId();
+                snapshot.data?.docs.forEach((element) {
+                  Map<String, dynamic> data = element.data() as Map<String, dynamic>;
+                  if (data['id'] != curId) {
+                    cards.add(makeCard(data['fname'] ?? '', data['sname'] ?? '', data['login'] ?? '', data['id'] ?? '-1', controller));
+                  }
+                });
                 return Column(
                   children: cards,
                 );
               }
         }
     );
-    
-    
-    
-    // final ss = contr.getAllUsers();
-    // return StreamBuilder(
-    //   stream: ss,
-    //   builder: (context, stream)
-    //   {
-    //     if (stream.connectionState == ConnectionState.waiting || stream.connectionState == ConnectionState.done)
-    //       {
-    //         print(1);
-    //         return CircularProgressIndicator();
-    //       }
-    //     else if (stream.connectionState == ConnectionState.active && stream.hasData)
-    //       {
-    //         print(2);
-    //         List<Widget> cards = [];
-    //         stream.data?.docs.map((doc) {
-    //           cards.add(makeCard(doc['fname'], doc['sname'], doc['login']));
-    //           print(doc['fname']);
-    //           print(doc['sname']);
-    //           print(doc['login']);
-    //         });
-    //         return Column(
-    //           children: cards,
-    //         );
-    //       }
-    //     else
-    //       {
-    //         print(3);
-    //         return Text("Ошибка");
-    //       }
-    //   }
-    // );
   }
 
   Widget? currentBody(Controller contr)
