@@ -17,60 +17,76 @@ class _AuthViewState extends State<AuthView> {
   final _pswd = TextEditingController();
   final customs = CustomWidgets();
   bool isLoading = false;
-  Image? logo = null;
+  Image? logo;
 
   @override
   void initState() {
     logo = Image.asset("assets/icon/iconBlack.png");
     super.initState();
   }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     precacheImage(logo!.image, context);
   }
+
   _AuthViewState({required this.controller});
+
   @override
   Widget build(BuildContext context) {
-    if (!isLoading)
-    return SingleChildScrollView(
-        reverse: true,
-        child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
-        child: Container(
-        color: Colors.black,
-        child: Align(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 20.0),
-              child: SizedBox(
-                width: 250.0,
-                height: 250.0,
-                child: logo,
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(bottom: 60.0),
-                child: Text(
-                  'Rush',
-                  style: TextStyle(color: Color.fromRGBO(195, 98, 63, 1), fontSize: 50.0, decoration: TextDecoration.none, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontFamily: 'Nexa'),
-                )),
-            customs.loginInput(_login),
-            customs.pswdInput(_pswd),
-            customs.loginBtn(context, controller, _login, _pswd, this.setStateLoading),
-            customs.createAccountBtn(context),
-            Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom))
-          ],
-        )))));
-    else return Center(
-      child: CircularProgressIndicator(color: Color.fromRGBO(195, 98, 63, 1),),
-    );
+    if (!isLoading) {
+      return SingleChildScrollView(
+          reverse: true,
+          child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+              child: Container(
+                  color: Colors.black,
+                  child: Align(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: SizedBox(
+                          width: 250.0,
+                          height: 250.0,
+                          child: logo,
+                        ),
+                      ),
+                      const Padding(
+                          padding: EdgeInsets.only(bottom: 60.0),
+                          child: Text(
+                            'Rush',
+                            style: TextStyle(
+                                color: Color.fromRGBO(195, 98, 63, 1),
+                                fontSize: 50.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                                fontFamily: 'Nexa'),
+                          )),
+                      customs.loginInput(_login),
+                      customs.pswdInput(_pswd),
+                      customs.loginBtn(
+                          context, controller, _login, _pswd, setStateLoading),
+                      customs.createAccountBtn(context),
+                      Padding(
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom))
+                    ],
+                  )))));
+    } else {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Color.fromRGBO(195, 98, 63, 1),
+        ),
+      );
+    }
   }
 
-  void setStateLoading(state)
-  {
+  void setStateLoading(state) {
     setState(() {
       isLoading = state;
     });
