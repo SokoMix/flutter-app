@@ -84,9 +84,22 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget makeCard(
-      String name, String desc, String gym, String id, Controller controller) {
+      String name, String surname, String age, String sex, String id, Controller controller) {
+    if (sex == 'Мужской') {
+      sex = 'мужчина';
+    } else {
+      sex = 'женщина';
+    }
     return Card(
         elevation: 2.0,
+        color: Colors.black,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+          side: BorderSide(
+            width: 1.0,
+            color: Colors.cyan,
+          )
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -101,24 +114,25 @@ class _HomePageState extends State<HomePage> {
                     return session.data!;
                   } else if (session.connectionState == ConnectionState.done &&
                       !session.hasData) {
-                    return const Text("No photo");
+                    return const Text("No photo", style: TextStyle(fontSize: 25, color: Color.fromRGBO(195, 98, 63, 1)),);
                   }
                   return const Text("Error");
                 }),
             ListTile(
               title: Text(
-                name,
-                style: const TextStyle(fontSize: 17, color: Colors.red),
+                '$name $surname',
+                style: const TextStyle(fontSize: 17, color: Color.fromRGBO(195, 98, 63, 1)),
               ),
               subtitle: Text(
-                desc,
-                style: const TextStyle(fontSize: 17, color: Colors.red),
+                'Возраст: $age, $sex',
+                style: const TextStyle(fontSize: 17, color: Color.fromRGBO(195, 98, 63, 1)),
               ),
-              trailing: Text(
-                gym,
-                style: const TextStyle(fontSize: 17, color: Colors.red),
+              trailing: const Icon(
+                Icons.favorite,
+                color: Colors.cyan,
+                size: 25,
               ),
-            )
+            ),
           ],
         ));
   }
@@ -143,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                   element.data() as Map<String, dynamic>;
               if (data['id'] != curId) {
                 cards.add(makeCard(data['fname'] ?? '', data['sname'] ?? '',
-                    data['login'] ?? '', data['id'] ?? '-1', controller));
+                    data['age'] ?? '', data['sex'] ?? '', data['id'] ?? '-1', controller));
               }
             });
             return Column(
@@ -210,7 +224,7 @@ class _HomePageState extends State<HomePage> {
               ),
               BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.heart_broken,
+                    Icons.favorite,
                     color: Color.fromRGBO(195, 98, 63, 1),
                   ),
                   label: 'Лайки'),
@@ -238,4 +252,3 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 }
-// BoxDecoration(color: Colors.cyan, border: null, child :)

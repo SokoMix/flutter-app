@@ -13,10 +13,10 @@ class Controller
     model = Model();
   }
 
-  Future<void> addUser(String login, String pswd, String fName, String sName) async
+  Future<void> addUser(String login, String pswd, String fName, String sName, String age, String sex) async
   {
     final lastid = await model.getLastId();
-    await model.addUser(lastid.toString(), login, pswd, fName, sName);
+    await model.addUser(lastid.toString(), login, pswd, fName, sName, age, sex);
   }
 
   Future<QuerySnapshot> getAllUsers() async
@@ -39,7 +39,7 @@ class Controller
   Future<Image> getAvatar(String id, context) async
   {
     final lst = await model.getImg(id) ?? Uint8List(0);
-    return Image.memory(lst, width: MediaQuery.of(context).size.width - 100, height: 300,);
+    return Image.memory(lst, width: MediaQuery.of(context).size.width, height: 300,);
   }
 
   Future<int> loginUser(String login, String pswd) async

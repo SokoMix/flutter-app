@@ -63,6 +63,12 @@ Function nameValidator = (str) {
   return null;
 };
 
+Function ageValidator = (str) {
+  int? val = int.tryParse(str);
+  if ((val ?? -1) < 1) return 'Некорректно задан возраст';
+  return null;
+};
+
 Function surnValidator = (str) {
   if ((str ?? '').isEmpty) return 'Фамилия не может быть пустой';
   const String et =
@@ -91,7 +97,10 @@ class _NewAccWidgetState extends State<NewAccWidget> {
   final _pswd = TextEditingController();
   final _fname = TextEditingController();
   final _sname = TextEditingController();
+  final _age = TextEditingController();
   final customs = CustomWidgets();
+  final List<String> _sexList = ['Мужской', 'Женский'];
+  String _sexNow = 'Мужской';
   final Controller controller;
 
   _NewAccWidgetState({required this.controller});
@@ -111,6 +120,34 @@ class _NewAccWidgetState extends State<NewAccWidget> {
                 customs.regInput(_pswd, pswdValidator, 'Введите пароль'),
                 customs.regInput(_fname, nameValidator, 'Введите имя'),
                 customs.regInput(_sname, surnValidator, 'Введите фамилию'),
+                customs.regInput(_age, ageValidator, 'Введите возраст'),
+                Material(
+                    color: Colors.black,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                        child: Row(
+                          children: [
+                            const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text('Пол:', style: TextStyle(color: Color.fromRGBO(195, 98, 63, 1), fontSize: 17))
+                            ),
+                            DropdownButton(
+                              items: _sexList.map((element) {
+                                return DropdownMenuItem(
+                                  value: element,
+                                  child: Text(element),
+                                );
+                              }).toList(),
+                              onChanged: (newVal) {
+                                setSex(newVal);
+                              },
+                              value: _sexNow,
+                              style: const TextStyle(color: Color.fromRGBO(195, 98, 63, 1), fontSize: 17),
+                              dropdownColor: Colors.black54,
+                            )
+                          ],
+                        ))),
+
                 Padding(
                     padding: const EdgeInsets.only(top: 30.0, bottom: 15.0),
                     child: OutlinedButton(
@@ -123,7 +160,7 @@ class _NewAccWidgetState extends State<NewAccWidget> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           await controller.addUser(_login.text, _pswd.text,
-                              _fname.text, _sname.text);
+                              _fname.text, _sname.text, _age.text, _sexNow);
                           Navigator.of(context, rootNavigator: true)
                               .pushNamed('/home_page');
                         }
@@ -139,5 +176,11 @@ class _NewAccWidgetState extends State<NewAccWidget> {
                     )),
               ],
             )));
+  }
+
+  void setSex(data) {
+    setState(() {
+      _sexNow = data;
+    });
   }
 }

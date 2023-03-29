@@ -11,12 +11,12 @@ class Model
   int _kol = 0;
   int _id = -1;
 
-  Future<void> addUser(String id, String login, String pswd, String fName, String sName) async
+  Future<void> addUser(String id, String login, String pswd, String fName, String sName, String age, String sex) async
   {
-    await _createuser(id, login, pswd, fName, sName);
+    await _createuser(id, login, pswd, fName, sName, age, sex);
   }
 
-  Future _createuser(String id, String login, String pswd, String fName, String sName) async {
+  Future _createuser(String id, String login, String pswd, String fName, String sName, String age, String sex) async {
     final user = _accounts.doc(id);
     final json = {
       'id' : id,
@@ -24,6 +24,8 @@ class Model
       'pswd' : pswd,
       'fname' : fName,
       'sname' : sName,
+      'age' : age,
+      'sex' : sex,
       'avatar' : '',
     };
     await user.set(json);

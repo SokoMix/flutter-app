@@ -15,7 +15,7 @@ class _AuthViewState extends State<AuthView> {
   final Controller controller;
   final _login = TextEditingController();
   final _pswd = TextEditingController();
-  final customs = CustomWidgets();
+  final _customs = CustomWidgets();
   bool isLoading = false;
   Image? logo;
 
@@ -67,11 +67,11 @@ class _AuthViewState extends State<AuthView> {
                                 fontStyle: FontStyle.italic,
                                 fontFamily: 'Nexa'),
                           )),
-                      customs.loginInput(_login),
-                      customs.pswdInput(_pswd),
-                      customs.loginBtn(
+                      _customs.loginInput(_login),
+                      _customs.pswdInput(_pswd),
+                      _customs.loginBtn(
                           context, controller, _login, _pswd, setStateLoading),
-                      customs.createAccountBtn(context),
+                      _customs.createAccountBtn(context),
                       Padding(
                           padding: EdgeInsets.only(
                               bottom: MediaQuery.of(context).viewInsets.bottom))
