@@ -38,8 +38,9 @@ class Controller
 
   Future<Image> getAvatar(String id, context) async
   {
-    final lst = await model.getImg(id) ?? Uint8List(0);
-    return Image.memory(lst, width: MediaQuery.of(context).size.width, height: 300,);
+    final avatar = await model.getAvatarPath(id);
+    final lst = await model.getImg(avatar) ?? Uint8List(0);
+    return Image.memory(lst, fit: BoxFit.cover);
   }
 
   Future<int> loginUser(String login, String pswd) async

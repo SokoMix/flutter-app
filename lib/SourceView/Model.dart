@@ -71,6 +71,11 @@ class Model
     return await que.get().then((value) {Map<String, dynamic> mp = value.docs.isNotEmpty ? value.docs.elementAt(0).data() as Map<String, dynamic> : {"id" : "-1"}; return mp["id"] ?? "-1";});
   }
 
+  Future<String> getAvatarPath(String id) async
+  {
+    return await _accounts.doc(id).get().then((value) => value['avatar'].toString());
+  }
+
   Future uploadImg(Uint8List img) async
   {
     final makeDir = _storage.ref().child('avatars').child(_id.toString());

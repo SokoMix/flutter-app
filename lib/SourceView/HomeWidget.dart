@@ -8,18 +8,15 @@ class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.controller}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState(controller);
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   int _iBar = 0;
-  final controller;
 
   int _getIbar() {
     return _iBar;
   }
-
-  _HomePageState(this.controller);
 
   void _setIbar(int item) {
     _iBar = item;
@@ -60,7 +57,7 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.symmetric(vertical: 5.0),
           child: TextButton(
               onPressed: () {
-                controller.setImage();
+                widget.controller.setImage();
               },
               child: const Text(
                 'Добавить фото',
@@ -92,7 +89,8 @@ class _HomePageState extends State<HomePage> {
     }
     return Card(
         elevation: 2.0,
-        color: Colors.black,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        color: Colors.teal,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(15.0)),
           side: BorderSide(
@@ -100,41 +98,58 @@ class _HomePageState extends State<HomePage> {
             color: Colors.cyan,
           )
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            FutureBuilder(
-                future: controller.getAvatar(id, context),
-                builder: (context, session) {
-                  if (session.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator(
-                        color: Color.fromRGBO(195, 98, 63, 1));
-                  } else if (session.connectionState == ConnectionState.done &&
-                      session.hasData) {
-                    return session.data!;
-                  } else if (session.connectionState == ConnectionState.done &&
-                      !session.hasData) {
-                    return const Text("No photo", style: TextStyle(fontSize: 25, color: Color.fromRGBO(195, 98, 63, 1)),);
-                  }
-                  return const Text("Error");
-                }),
-            ListTile(
-              title: Text(
-                '$name $surname',
-                style: const TextStyle(fontSize: 17, color: Color.fromRGBO(195, 98, 63, 1)),
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: RadialGradient(radius: 0.9, colors: [Colors.teal, Colors.black], center: Alignment.bottomCenter),
+            // image: DecorationImage(
+            //   image: AssetImage('assets/backroundCard.png'),
+            //   fit: BoxFit.cover,
+            //   alignment: Alignment.topCenter
+            // )
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              FutureBuilder(
+                  future: controller.getAvatar(id, context),
+                  builder: (context, session) {
+                    if (session.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator(
+                          color: Color.fromRGBO(195, 98, 63, 1));
+                    } else if (session.connectionState == ConnectionState.done &&
+                        session.hasData) {
+                      return session.data!;
+                    } else if (session.connectionState == ConnectionState.done &&
+                        !session.hasData) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.width / 2),
+                        child: const Text(
+                          "Нет фото",
+                          style: TextStyle(fontSize: 25, color: Colors.white),
+                        )
+                      );
+                    }
+                    return const Text("Error");
+                  }),
+              ListTile(
+                title: Text(
+                  '$name $surname',
+                  style: const TextStyle(fontSize: 17, color: Colors.white),
+                ),
+                subtitle: Text(
+                  'Возраст: $age, $sex',
+                  style: const TextStyle(fontSize: 17, color: Colors.white),
+                ),
+                trailing: const Icon(
+                  Icons.favorite,
+                  color: Colors.cyan,
+                  size: 25,
+                ),
               ),
-              subtitle: Text(
-                'Возраст: $age, $sex',
-                style: const TextStyle(fontSize: 17, color: Color.fromRGBO(195, 98, 63, 1)),
-              ),
-              trailing: const Icon(
-                Icons.favorite,
-                color: Colors.cyan,
-                size: 25,
-              ),
-            ),
-          ],
-        ));
+            ],
+          )
+        )
+    );
   }
 
   Widget usersCards(Controller contr) {
@@ -151,13 +166,13 @@ class _HomePageState extends State<HomePage> {
             return const Text("Ошибка");
           } else {
             List<Widget> cards = [];
-            final curId = controller.currentUserId();
+            final curId = widget.controller.currentUserId();
             snapshot.data?.docs.forEach((element) {
               Map<String, dynamic> data =
                   element.data() as Map<String, dynamic>;
               if (data['id'] != curId) {
                 cards.add(makeCard(data['fname'] ?? '', data['sname'] ?? '',
-                    data['age'] ?? '', data['sex'] ?? '', data['id'] ?? '-1', controller));
+                    data['age'] ?? '', data['sex'] ?? '', data['id'] ?? '-1', widget.controller));
               }
             });
             return Column(
@@ -208,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                 size: 25,
               )),
         ),
-        body: SingleChildScrollView(child: currentBody(controller)),
+        body: SingleChildScrollView(child: currentBody(widget.controller)),
         bottomNavigationBar: Container(
           decoration: const BoxDecoration(
               color: Colors.cyan,
